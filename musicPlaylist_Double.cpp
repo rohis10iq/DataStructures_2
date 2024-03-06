@@ -1,0 +1,94 @@
+#include<iostream>
+using namespace std;
+
+class Node{
+    private:
+        string info;
+        Node *next;
+    public:
+        Node(string info){
+            this->info = info;
+            next = NULL;
+        }
+
+    friend class DoubleList;
+};
+
+class DoubleList{
+    private:
+        Node* head;
+    public:
+        DoubleList(){
+            head = NULL;
+        }
+
+    void addAtBeginning(string info){
+
+        Node *newNode = new Node(info);
+        if(head == NULL){
+
+            head = newNode;
+            head->next = head;
+        }
+        else{
+
+            Node *temp = head;
+            while(temp->next != head){
+                temp = temp->next;
+            }
+            newNode->next = head;
+            temp->next = newNode;
+            head = newNode;
+        }
+    }
+
+    void removeFromEnd(){
+
+        if(head == NULL){
+
+            cout<<"Playlist is empty. No song to remove."<<endl;
+            return;
+        }
+
+        Node *temp = head;
+        while(temp->next->next != head){
+
+            temp = temp->next;
+        }
+
+        Node *current = temp->next;
+        temp->next = head;
+        delete current;
+    }
+
+    void display(){
+
+        if(head == NULL){
+
+            cout<<"Playlist is empty."<<endl;
+            return;
+        }
+
+        Node *curr = head;
+        do{
+            cout<<"Songs : "<<curr->info<<endl;
+            curr = curr->next;
+        }
+        while(curr != head);
+    }
+};
+
+int main()
+{
+    DoubleList DList;
+    DList.addAtBeginning("Din Dhallay");
+    DList.addAtBeginning("Me & You");
+    DList.addAtBeginning("Khel");
+    DList.addAtBeginning("Last Time");
+    DList.addAtBeginning("Sapna");
+    DList.addAtBeginning("Tau Kia Huwa");
+    DList.display();
+    cout<<"Removing The Last Song."<<endl;
+    DList.removeFromEnd();
+    DList.display();
+}
